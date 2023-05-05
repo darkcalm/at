@@ -1,0 +1,230 @@
+<html lang="en-US">
+<head>
+</head>
+<body>
+<script src="/app.js" defer></script>	
+	
+<div class="chat-container collapsed">
+	<div class="chat-header">
+    <button class="chat-btn">-</button>
+  </div>
+  <div class="chat-body">IDE Tools?</div>
+</div>
+	
+<section id="ceil" class="justify">
+	<div class="grow"><img src="/top.png" height=32>
+	</div>
+	<div class="shrink">
+		<button id="achro" onclick="achro()">🎨</button>
+		<button id="robin" onclick="robin()">🐈</button>
+		<a href="https://replit.com/join/usylplewxv-darkcalm"><button id="repl">▶️ sketchy? build this!</button></a>
+	</div>
+</section>
+
+<section id="views">
+</section>
+</body>
+</html>
+
+<!--css-->
+</div>
+<style>
+:root {
+	--l0: 360px;
+	--l1: 100vw;
+	--l2: 48px;
+	--l3: unset;
+	--l4: unset;
+	--l5: 4px;
+	--l6: 25.6px;
+	--l7: 2px;
+	--c0: white;
+	--c1: rgba(148,154,164,.1);
+	--c2: rgba(148,154,164,.5);
+	--font: 'Nunito', sans-serif;
+}
+	body { margin: 0; scrollbar-color: var(--c1) transparent; scrollbar-width: thin; font-family: var(--font) }
+	#ceil { margin: 0; height: var(--l2); gap: calc(var(--l5) * 2); background: var(--c1) }
+	#views { display: flex; position: absolute; top: var(--l2); height: calc(var(--l0) - var(--l2)); width: var(--l1) }
+	#gates { position: absolute; top: 0; left: 0; width: calc(var(--l3) - var(--l5) - var(--l7)); height: calc(var(--l0) - var(--l2)) }
+	#lines { position: absolute; top: 0; right: 0; width: calc(var(--l1) - var(--l3)); height: calc(var(--l0) - var(--l2) - var(--l4) - calc(var(--l5) * 2)) }
+	#graphs { position: absolute; bottom: 0; right: 0; width: calc(var(--l1) - var(--l3)); height: var(--l4); background: var(--c0) }
+	#graph-root { height: 100% }
+	.grip { position: absolute; background: var(--c1) }
+	#gates-grip { top: 0; left: calc(var(--l3) - calc(var(--l5) * 2)); width: calc(var(--l5) * 2); height: 100%; cursor: ew-resize }
+	#lines-grip { bottom: var(--l4); left: var(--l3); height: calc(var(--l5) * 2); width: calc(var(--l1) - var(--l3) - var(--l5)); cursor: ns-resize }
+	.justify { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap }
+	.justify .grow { flex-grow: 1;  }
+	.justify .shrink { flex-grow: 0; display: flex; gap: var(--l5) }
+	.overflow { overflow: auto }
+	.overflow table { width: 100% }
+	.c0 span { max-width: var(--l6) }
+	.th,.gate-td,.line-td { min-width: var(--l6); vertical-align: middle; border-bottom: var(--l7) inset var(--c1); line-height: calc(var(--l6) * 0.75 - var(--l7)) }
+	.th { border-color: var(--c0); background: var(--c0) }
+	.line { overflow-wrap: anywhere }
+	.line-sp,.gate-sp { display: inline-block; vertical-align: top }
+	.line-sp { min-width: var(--l5); padding-right: 0.2em }
+	.gate-sp { width: 100% }
+	.c4,.s4 { color: var(--c2) }
+	.s1,.s5 { background: rgba(0,255,255,0.1) }
+	.s2,.s6 { background: rgba(255,0,0,0.1) }
+	.s3,.s7 { background: rgba(0,255,0,0.1) }
+	.s8 { background: rgba(0,0,255,0.1) }
+	.no-colors .s1, .no-colors .s5,
+  .no-colors .s2, .no-colors .s6,
+  .no-colors .s3, .no-colors .s7,
+  .no-colors .s8 { background: transparent !important; }
+</style>
+
+<!--css-->
+<style>
+button {
+  background-color: var(--c0);
+  border: 0;
+  border-radius: var(--l7);
+  cursor: pointer;
+	height: var(--l6);
+	padding: 0 1em;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  var(--c0)-space: pre;
+}
+
+button:hover {
+  border-color: var(--c2);
+  box-shadow: var(--c1) 0 var(--l7) var(--l7);
+}
+
+button:focus {
+  border-color: var(--c2);
+  outline: none;
+}
+
+.grip {
+	box-sizing: border-box;
+	display: flex;
+	flex-basis: auto;
+	flex-direction: column;
+	flex-shrink: 0;
+	outline: none;
+	-moz-box-align: center;
+	align-items: center;
+	-moz-box-pack: center;
+	justify-content: center;
+	z-index: 1;
+}
+	
+.gripline {
+	-moz-box-align: stretch;
+	align-items: stretch;
+	box-sizing: border-box;
+	display: flex;
+	flex-basis: auto;
+	flex-direction: column;
+	flex-shrink: 0;
+	outline: none;
+	background-color: var(--c2);
+	transition-duration: 0.12s;
+	transition-delay: 0s;
+	border-radius: var(--l7);
+	transition-property: width, height, background-color;
+	transition-timing-function: ease-out;
+}
+
+.c0 span {
+	overflow: hidden;
+	var(--c0)-space: nowrap;
+	text-overflow: ellipsis
+}
+
+.chat-container {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: calc(var(--l6) * 4);
+	height: var(--l6);
+  background-color: var(--c1);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-container.collapsed {
+  width: var(--l6);
+  overflow: hidden;
+}
+
+.chat-container:hover {
+	box-shadow: 0 0 var(--l7) var(--c2);
+}	
+
+.chat-body {
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.chat-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+	width: var(--l6);
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+	
+.chat-container.collapsed .chat-footer,
+.chat-container.collapsed .chat-body {
+  display: none;
+}
+
+#gates::-webkit-scrollbar:horizontal {
+  display: none;
+}
+
+#gates {
+	direction: rtl;
+}
+#gates * {
+	direction: ltr;
+}
+
+@-webkit-keyframes GradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@-moz-keyframes GradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes GradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+</style>
