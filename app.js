@@ -1,3 +1,4 @@
+//loads
 var Gates = {},
 	Lines = {},
 	Params = {};
@@ -10,7 +11,7 @@ updateParams();
 function updateData() {
 	Gates = {
 		head: ["[]", "。", "↬", "n.", "←", "、", "→", "id", "⊸"],
-		body: ['16.', '', 'A', 'method', '', ',', '', '', 'comprising', '', ':', '', '', '', '', '', '', 'transmitting', '', '', '', '', '', ',', '', '', 'via', '', '', 'a', 'lighting control network', '', ',', '', '', '', '', '', 'a', 'normal power active message', '1', '', '', '', 'to', '', '', 'a', 'lighting control group', '', '', '', '', 'repeatedly at', '', '', 'a', 'predetermined time interval', '', '', '', '', '', '', ';', '', '', '', '', '', '', 'tracking', '', '', 'an', 'active message gap time', '2', '', '', '', '', '', ';', '', '', '', '', '', '', 'in response to receiving', '', '', '', '', '', '', 'the', '1', 'from', '', '', 'a', 'member device', '', '', '', '', 'before', '', '', '', '', '', '', 'the tracked', '2', 'exceeds', '', '', 'an', 'active message timeout', '3', ',', '', '', 'resetting', '', '', '', '', '', '', 'the', '2', '', '', ';', '', '', '', '', '', '', 'in response to', '', '', '', '', '', '', 'the tracked', '2', 'exceeding', '', '', '', '', '', '', 'the', '3', '', '', '', '', '', '', ',', '', '', 'entering', '', '', 'an', 'emergency mode (EM) active state', '', '', '', '', 'by controlling', '', '', 'an', 'emergency luminaire light source', '', '', '', '', 'via', '', ',', 'an', 'emergency luminaire driver circuit', '', ',', '', '', 'to continuously emit illumination lighting', '', '.', '', '', '', '', '', '', '']
+		body: ['16.','','A','method','',',','','','comprising','',':','','','','','','','transmitting','','','','','',',','','','via','','','a','lighting control network','',',','','','','','','a','normal power active message','1','','','','to','','','a','lighting control group','','','','','repeatedly at','','','a','predetermined time interval','','','','','','',';','','','','','','','tracking','','','an','active message gap time','2','','','','','',';','','','','','','','in response to receiving','','','','','','','the','1','from','','','a','member device','','','','','before','','','','','','','the tracked','2','exceeds','','','an','active message timeout','3',',','','','resetting','','','','','','','the','2','','',';','','','','','','','in response to','','','','','','','the tracked','2','exceeding','','','','','','','the','3','','','','','','',',','','','entering','','','an','emergency mode (EM) active state','','','','','by controlling','','','an','emergency luminaire light source','','','','','via','',',','an','emergency luminaire driver circuit','',',','','','to continuously emit illumination lighting','','.','','','','','','','']
 	};
 	Lines = {
 		head: ["[]", "...。"],
@@ -72,7 +73,6 @@ linesGrip = newNodeWith("div", ["id", "lines-grip", "class", "grip"], [newNodeWi
 views.appendChild(linesGrip);
 
 // utility
-
 function newNodeWith(tag, attr = [], append = null, text = null) {
 	let e = document.createElement(tag);
 	if (text) e.appendChild(document.createTextNode(text));
@@ -103,7 +103,6 @@ V = [{
 }];
 viewi = 0;
 spani = 0;
-//offset
 
 root = document.documentElement;
 gatesEngaged = false;
@@ -128,7 +127,7 @@ document.addEventListener('mouseup', gatesDisengage);
 document.addEventListener('mousemove', gatesEngagement);
 linesEngaged = false;
 linesGrip = document.getElementById('lines-grip');
-root.style.setProperty('--l4', `calc(100vh - var(--l2) - var(--l3))`);
+root.style.setProperty('--l4', `calc(var(--l2) + var(--l3))`);
 function linesEngage(e) {
 	e.preventDefault(), linesEngaged = true;
 }
@@ -176,13 +175,27 @@ function input() {
 	here = V[viewi].spans[spani];
 	there = V[+(viewi == 0)].spans[spani];
 	there.innerText = here.innerText;
-	//chain reaction
+	//chain reaction?
 }
 
+//buttons
+function array() {
+  copied = "['";
+  es = Array.from(V[0].spans);
+  for (i = 0; i < es.length; i++) copied += baseText(es[i]).trim() + "','";
+  copied = copied.slice(0, -2)+"]";
+	document.getElementById("array").setAttribute("data-clipboard-text", copied);
+	document.getElementById("array").click();
+}
+function baseText(e) {
+  return e.textContent.replace(/'/g, "\\'").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+}
+new ClipboardJS("#array");
 function robin() {
-	viewi = +(viewi == 0);
+	viewi = +(viewi == 1);
 	focus(V[viewi].spans[spani]);
 }
+robin();
 function achro() {
 	root.classList.toggle('no-colors');
 }
